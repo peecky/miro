@@ -1,8 +1,14 @@
-#include <windows.h>
-#include <gl/gl.h>
-#include <gl/glut.h>
-#include <iostream.h>
-#include <time.h>
+#ifdef __APPLE__
+#include <OpenGL/gl.h>
+#include <GLUT/glut.h>
+#else
+#include <GL/gl.h>
+#include <GL/glut.h>
+#endif
+
+#include <iostream>
+#include <ctime>
+#include <sys/time.h>
 
 #include "miro.h"
 #include "pathfinder.h"
@@ -22,6 +28,16 @@ int view_Left, view_Right, view_Bottom, view_Up;	//view points
 int ViewFactor;
 int ViewChange_x, ViewChange_y;
 int timefactor;		// controls duration
+
+static int timeGetTime() {
+	static time_t init_sec = 0;
+	timeval tv;
+	gettimeofday(&tv, NULL);
+	if (init_sec == 0) {
+		init_sec = tv.tv_sec;
+	}
+	return (tv.tv_sec - init_sec) * 1000 + tv.tv_usec / 1000;
+}
 
 // remove the line between two connected cells
 void open_road( int x, int y, int dest ){	
@@ -457,6 +473,7 @@ void idle()
 }
 
 int main( int argc, char ** argv ){
+	using namespace std;
 
 	srand( ( unsigned )time( NULL ) );
 

@@ -1,7 +1,13 @@
-#include<windows.h>
-#include<gl/gl.h>
-#include<gl/glut.h>
-#include<math.h>
+#ifdef __APPLE__
+#include <OpenGL/gl.h>
+#include <GLUT/glut.h>
+#else
+#include <GL/gl.h>
+#include <GL/glut.h>
+#endif
+
+#include <cmath>
+#include <cstdlib>
 
 #include "pathfinder.h"
 #include "miro.h"
@@ -166,12 +172,13 @@ int PathFinder::Stack_Top()
 
 void PathFinder::Draw(bool animation)
 {
+	double x1;
 	/* draw the completed maze */
 	glClearColor( R, G, B, 0.0 );
 	glClear( GL_COLOR_BUFFER_BIT );
 	glColor3f( 1.0-R, 1.0-G, 1.0-B );
 	glBegin( GL_LINES );
-	for( double x1 = 1 ; x1 < ::width+2 ; x1++ ){
+	for( x1 = 1 ; x1 < ::width+2 ; x1++ ){
 		glVertex2f( x1*10, 10.0 );
 		glVertex2f( x1*10, ::height*10+10.0 );
 	}
