@@ -18,6 +18,14 @@
 typedef struct Cell{
 	bool is_open;	// has this cell visited for making maze
 	bool road[4];	// is each four directions of cells(up, down, right, left) connected to this cell
+
+	Cell() {
+		is_open = false;
+		road[0] = false;
+		road[1] = false;
+		road[2] = false;
+		road[3] = false;
+	}
 } Cell;
 
 void make_maze();
