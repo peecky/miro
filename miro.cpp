@@ -13,6 +13,8 @@
 #include "miro.h"
 #include "pathfinder.h"
 
+void display();
+
 Cell **cell;
 int width, height;	// the size of maze
 int starting_x, starting_y;	// starting position
@@ -94,7 +96,7 @@ void gen_maze(){
 
 	int x, y;	// position of the current cell
 	int dest;	// direction of to be connected cell
-	static int length = 1;	// size of the array chosen(store the visited(connected) cells)
+	static int length = 0;	// size of the array chosen(store the visited(connected) cells)
 	int tmp;
 	int currTime;
 	static int oldTime = 0;
@@ -115,7 +117,7 @@ void gen_maze(){
 	else return;
 
 	
-	if( length == 1 ){
+	if( length == 0 ){
 		// make start point and goal
 		dest = rand()%2 + 1;
 		if( dest == down ){
@@ -123,27 +125,21 @@ void gen_maze(){
 			starting_x = x = rand()%width+1;
 			starting_y = y = height;
 			cell[x-1][y-1].road[up] = true;
-			open_road( x, y , up );
 			// goal
 			goal_x = x = rand()%width+1;
 			goal_y = y = 1;
 			cell[x-1][y-1].road[down] = true;
-			open_road( x, y , down );
 		}
 		else{
 			// starting point
 			starting_x = x = width;
 			starting_y = y = rand()%height+1;
 			cell[x-1][y-1].road[right] = true;
-			open_road( x, y , right );
 			// goal
 			goal_x = x = 1;
 			goal_y = y = rand()%height+1;
 			cell[x-1][y-1].road[left] = true;
-			open_road( x, y , left );
 		}
-		glutSwapBuffers();
-	
 		chosen = new int [height * width];
 
 		// choose the first cell randomly
@@ -152,9 +148,12 @@ void gen_maze(){
 		cell[x-1][y-1].is_open = true;
 		chosen[0] = width*(y-1) + x;	// store the first visited cell
 
+		length = 1;
 	}
+	else {
 
-	while(1){
+	bool cellOpen = false;
+	while (!cellOpen) {
 		
 		tmp = chosen[ rand()%length ];	// randomly choose a cell which is visited
 		x = tmp % width;
@@ -179,10 +178,8 @@ void gen_maze(){
 
 			chosen[length] = width*( y-1 + 1 ) + x;
 			length++;
-
-			open_road( x, y, up );
-			glutSwapBuffers();
-			return;
+			cellOpen = true;
+			break;
 
 		case down:
 			if( y == 1 || cell[ x-1 ][ y-1 - 1 ].is_open == true )
@@ -195,10 +192,8 @@ void gen_maze(){
 
 			chosen[length] = width*(y-1 - 1) + x;
 			length++;
-			
-			open_road( x, y, down );
-			glutSwapBuffers();
-			return;
+			cellOpen = true;
+			break;
 
 		case right:
 			if( x == width || cell[ x-1 + 1 ][ y-1 ].is_open == true )
@@ -211,10 +206,8 @@ void gen_maze(){
 
 			chosen[length] = width * ( y-1 ) + x + 1;
 			length++;
-			
-			open_road( x, y, right );
-			glutSwapBuffers();
-			return;
+			cellOpen = true;
+			break;
 
 		case left:
 			if( x == 1 || cell[ x-1 - 1 ][ y-1 ].is_open == true )
@@ -227,12 +220,12 @@ void gen_maze(){
 
 			chosen[length] = width * ( y-1 ) + x - 1;
 			length++;
-			
-			open_road( x, y, left );
-			glutSwapBuffers();
-			return;
+			cellOpen = true;
+			break;
 		}
 	}
+	}
+	display();
 }
 
 void reshape( int w, int h ){
