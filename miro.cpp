@@ -282,7 +282,7 @@ void display()
 }
 
 // the space bar toggles making maze or pause
-void start( unsigned char key, int x, int y ){
+void keyFunc( unsigned char key, int x, int y ){
 	if( key == ' ' )
 		work = !work;
 	if( key == '-' && timefactor < 50)
@@ -393,7 +393,7 @@ void goal_ceremony()
 	if( count > 300) state++;
 }
 
-void view( int key, int x, int y ){
+void specialKeyFunc( int key, int x, int y ){
 	if( key == GLUT_KEY_RIGHT && ViewChange_x < width * 5 )
 		ViewChange_x += 5;	// scroll the maze right
 	if( key == GLUT_KEY_LEFT && ViewChange_x > width * -5 )
@@ -531,8 +531,8 @@ int main( int argc, char ** argv ){
 	glutReshapeFunc( reshape );
 	glutDisplayFunc( display );
 	glutIdleFunc( idle );
-	glutSpecialFunc( view );
-	glutKeyboardFunc( start );
+	glutSpecialFunc( specialKeyFunc );
+	glutKeyboardFunc( keyFunc );
 
 	glutMainLoop();
 
