@@ -282,15 +282,18 @@ void display()
 
 // the space bar toggles making maze or pause
 void keyFunc( unsigned char key, int x, int y ){
-	if( key == ' ' )
+	switch (key) {
+	case ' ':
 		work = !work;
-	if( key == '-' && timefactor < 50)
-		timefactor += 5;	// work faster
-	if( key == '+' && timefactor > 0 )
+		break;
+	case '-':
+		if (timefactor < 50) timefactor += 5;	// work faster
+		break;
+	case '+':
 		timefactor -= 5;	// work slower
-	if( timefactor < 0) timefactor = 0;
-
-	if( key == 0x7f ) {	// initialzing all factors, (delete key)
+		if( timefactor < 0) timefactor = 0;
+		break;
+	case 0x7f:	// initialzing all factors, (delete key)
 		Over_view = false;
 		ViewFactor = 20;
 		ViewChange_x = 0;
@@ -298,6 +301,7 @@ void keyFunc( unsigned char key, int x, int y ){
 		timefactor = INIT_TIMEFACTOR;
 		reviewpoint();
 		display();
+		break;
 	}
 }
 
@@ -394,28 +398,37 @@ void goal_ceremony()
 }
 
 void specialKeyFunc( int key, int x, int y ){
-	if( key == GLUT_KEY_RIGHT && ViewChange_x < width * 5 )
-		ViewChange_x += 5;	// scroll the maze right
-	if( key == GLUT_KEY_LEFT && ViewChange_x > width * -5 )
-		ViewChange_x -= 5;	// scroll the maze left
-	if( key == GLUT_KEY_DOWN && ViewChange_y > height * -5 )
-		ViewChange_y -= 5;	// scroll the maze down
-	if( key == GLUT_KEY_UP && ViewChange_y < height * 5 )
-		ViewChange_y += 5;	// scroll the maze up
-	if( key == GLUT_KEY_PAGE_DOWN && ViewFactor < ((width>height)? width * 5 : height * 5) )
-		ViewFactor += 5;	// zoom in
-	if( key == GLUT_KEY_PAGE_UP && ViewFactor > 0 )
-		ViewFactor -= 5;	// zoom out
-	if( key == GLUT_KEY_INSERT ){	// initializing viewing
+	switch (key) {
+	case GLUT_KEY_RIGHT:
+		if (ViewChange_x < width * 5) ViewChange_x += 5;	// scroll the maze right
+		break;
+	case GLUT_KEY_LEFT:
+		if (ViewChange_x > width * -5) ViewChange_x -= 5;	// scroll the maze left
+		break;
+	case GLUT_KEY_DOWN:
+		if (ViewChange_y > height * -5) ViewChange_y -= 5;	// scroll the maze down
+		break;
+	case GLUT_KEY_UP:
+		if (ViewChange_y < height * 5) ViewChange_y += 5;	// scroll the maze up
+		break;
+	case GLUT_KEY_PAGE_DOWN:
+		if (ViewFactor < ((width>height)? width * 5 : height * 5)) ViewFactor += 5;	// zoom in
+		break;
+	case GLUT_KEY_PAGE_UP:
+		if (ViewFactor > 0) ViewFactor -= 5;	// zoom out
+		break;
+	case GLUT_KEY_INSERT:	// initializing viewing
 		ViewFactor = 20;
 		ViewChange_x = 0;
 		ViewChange_y = 0;
-	}
-
-	if( key == GLUT_KEY_HOME )
+		break;
+	case GLUT_KEY_HOME:
 		Over_view = true;	// set the whole maze can be seen
-	if( key == GLUT_KEY_END )
+		break;
+	case GLUT_KEY_END:
 		Over_view = false;	// zoomed maze
+		break;
+	}
 
 	reviewpoint();
 	display();
