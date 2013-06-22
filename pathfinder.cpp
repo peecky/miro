@@ -151,46 +151,58 @@ void PathFinder::Draw()
 	glColor3f( 1.0-R, 1.0-G, 1.0-B );	// color of body
 	glTranslatef( 30, 50, 0 );
 
-	if( init_dest == left ) glTranslatef(20,15,0), glRotatef( 180, 0, 0, 1 ),glTranslatef(-20, -15, 0);
-	if( init_dest == up )   glTranslatef(20,15,0), glRotatef( 90, 0, 0, 1 ), glTranslatef(-20, -15, 0);
-	if( init_dest == down ) glTranslatef(20,15,0), glRotatef( -90, 0, 0, 1 ), glTranslatef(-20, -15, 0);
+	double rotateAngle = 0;
+	switch (init_dest) {
+	case left:
+		rotateAngle = 180.0;
+		break;
+	case up:
+		rotateAngle = 90.0;
+		break;
+	case down:
+		rotateAngle = -90.0;
+		break;
+	}
 
 	if( rolling_status < ROLL_FACT ){
 		switch (init_dest) {
 		case left:
 			if( Dest == right )
-				glTranslatef(20,15,0), glRotatef( 180/ROLL_FACT*rolling_status, 0, 0, 1 ), glTranslatef(-20, -15, 0);
+				rotateAngle += 180.0/ROLL_FACT*rolling_status;
 			else if( Dest == up )
-				glTranslatef(20,15,0), glRotatef( -90/ROLL_FACT*rolling_status, 0, 0, 1 ), glTranslatef(-20, -15, 0);
+				rotateAngle += -90.0/ROLL_FACT*rolling_status;
 			else if( Dest == down )
-				glTranslatef(20,15,0), glRotatef( 90/ROLL_FACT*rolling_status, 0, 0, 1 ), glTranslatef(-20, -15, 0);
+				rotateAngle += 90.0/ROLL_FACT*rolling_status;
 			break;
 		case right:
 			if( Dest == left )
-				glTranslatef(20,15,0), glRotatef( 180/ROLL_FACT*rolling_status, 0, 0, 1 ), glTranslatef(-20, -15, 0);
+				rotateAngle += 180.0/ROLL_FACT*rolling_status;
 			else if( Dest == up )
-				glTranslatef(20,15,0), glRotatef( 90/ROLL_FACT*rolling_status, 0, 0, 1 ), glTranslatef(-20, -15, 0);
+				rotateAngle += 90.0/ROLL_FACT*rolling_status;
 			else if( Dest == down )
-				glTranslatef(20,15,0), glRotatef( -90/ROLL_FACT*rolling_status, 0, 0, 1 ), glTranslatef(-20, -15, 0);
+				rotateAngle += -90.0/ROLL_FACT*rolling_status;
 			break;
 		case up:
 			if( Dest == down )
-				glTranslatef(20,15,0), glRotatef( 180/ROLL_FACT*rolling_status, 0, 0, 1 ), glTranslatef(-20, -15, 0);
+				rotateAngle += 180.0/ROLL_FACT*rolling_status;
 			else if( Dest == left )
-				glTranslatef(20,15,0), glRotatef( 90/ROLL_FACT*rolling_status, 0, 0, 1 ), glTranslatef(-20, -15, 0);
+				rotateAngle += 90.0/ROLL_FACT*rolling_status;
 			else if( Dest == right )
-				glTranslatef(20,15,0), glRotatef( -90/ROLL_FACT*rolling_status, 0, 0, 1 ), glTranslatef(-20, -15, 0);
+				rotateAngle += -90.0/ROLL_FACT*rolling_status;
 			break;
 		case down:
 			if( Dest == left )
-				glTranslatef(20,15,0), glRotatef( -90/ROLL_FACT*rolling_status, 0, 0, 1 ), glTranslatef(-20, -15, 0);
+				rotateAngle += -90.0/ROLL_FACT*rolling_status;
 			else if( Dest == up )
-				glTranslatef(20,15,0), glRotatef( 180/ROLL_FACT*rolling_status, 0, 0, 1 ), glTranslatef(-20, -15, 0);
+				rotateAngle += 180.0/ROLL_FACT*rolling_status;
 			else if( Dest == right )
-				glTranslatef(20,15,0), glRotatef( 90/ROLL_FACT*rolling_status, 0, 0, 1 ), glTranslatef(-20, -15, 0);
+				rotateAngle += 90.0/ROLL_FACT*rolling_status;
 			break;
 		}
 	}
+	glTranslatef(20,15,0);
+	glRotatef(rotateAngle, 0, 0, 1);
+	glTranslatef(-20, -15, 0);
 	glCallList( Body );	// draw body
 
 	glPushMatrix();
