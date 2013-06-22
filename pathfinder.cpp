@@ -139,8 +139,15 @@ void PathFinder::Move()
 		ismoving = false;
 	}
 
-	Draw( rolling_status == ROLL_FACT );	// if it is rotating then do not move the leg, arm and eye
-
+	if(rolling_status == ROLL_FACT) {	// if it is rotating then do not move the leg, arm and eye
+		walk_status++;
+		if( walk_status > 5 )
+			walk_status = -4;
+		eye_status++;
+		if( eye_status >= 30 )
+			eye_status = 0;
+	}
+	Draw();
 }
 
 bool PathFinder::isMoving()
@@ -170,7 +177,7 @@ int PathFinder::Stack_Top()
 	return recursion_stack[stack_top];
 }
 
-void PathFinder::Draw(bool animation)
+void PathFinder::Draw()
 {
 	double x1;
 	/* draw the completed maze */
@@ -188,15 +195,6 @@ void PathFinder::Draw(bool animation)
 	}
 	glEnd();
 	draw_maze();
-
-	if(animation == true) {
-		walk_status++;
-		if( walk_status > 5 )
-			walk_status = -4;
-		eye_status++;
-		if( eye_status >= 30 )
-			eye_status = 0;
-	}
 
 	glLoadIdentity();
 	glTranslatef(current_x + SHIFTFACTOR_X, current_y + SHIFTFACTOR_Y, 0);

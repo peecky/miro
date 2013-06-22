@@ -19,7 +19,7 @@ public:
 	bool isMoving();	// is it doing moving animation?
 	void set_dest( int new_dest );
 	void Move();
-	void Draw(bool animation = true);
+	void Draw();
 	// if animation is false, it doesn't move arm, leg and eye. Just draw
 	// if get_goal is true then do goal ceremony
 

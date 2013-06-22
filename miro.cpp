@@ -277,7 +277,7 @@ void display()
 	glEnd();
 
 	draw_maze();
-	if(gb_finder != NULL) gb_finder->Draw(false);
+	if(gb_finder != NULL) gb_finder->Draw();
 
 	glutSwapBuffers();
 }
@@ -456,7 +456,7 @@ void reviewpoint(bool draw)
 	glMatrixMode (GL_MODELVIEW);
 	glLoadIdentity();
 
-	if(draw == true) gb_finder->Draw(false);	// for efficiency
+	if(draw == true) gb_finder->Draw();	// for efficiency
 }
 
 void idle()
