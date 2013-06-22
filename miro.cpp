@@ -314,8 +314,8 @@ void path_finding()
 		oldTime = currTime;
 	else return;
 
-	if(finder.isMoving() == true ) {	// if it is doing animation
-		finder.Move();	// moving animation
+	finder.UpdateStatus();
+	if(finder.isMoving()) {
 		return;
 	}
 

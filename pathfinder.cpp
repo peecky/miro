@@ -156,43 +156,40 @@ void PathFinder::Draw()
 	if( init_dest == down ) glTranslatef(20,15,0), glRotatef( -90, 0, 0, 1 ), glTranslatef(-20, -15, 0);
 
 	if( rolling_status < ROLL_FACT ){
-		rolling_status++;
-
-		if( init_dest == Dest ) rolling_status = ROLL_FACT;	//if it is not need to roll
-		else if( init_dest == left ){
+		switch (init_dest) {
+		case left:
 			if( Dest == right )
 				glTranslatef(20,15,0), glRotatef( 180/ROLL_FACT*rolling_status, 0, 0, 1 ), glTranslatef(-20, -15, 0);
 			else if( Dest == up )
 				glTranslatef(20,15,0), glRotatef( -90/ROLL_FACT*rolling_status, 0, 0, 1 ), glTranslatef(-20, -15, 0);
 			else if( Dest == down )
 				glTranslatef(20,15,0), glRotatef( 90/ROLL_FACT*rolling_status, 0, 0, 1 ), glTranslatef(-20, -15, 0);
-		}
-		else if( init_dest == right ){
+			break;
+		case right:
 			if( Dest == left )
 				glTranslatef(20,15,0), glRotatef( 180/ROLL_FACT*rolling_status, 0, 0, 1 ), glTranslatef(-20, -15, 0);
 			else if( Dest == up )
 				glTranslatef(20,15,0), glRotatef( 90/ROLL_FACT*rolling_status, 0, 0, 1 ), glTranslatef(-20, -15, 0);
 			else if( Dest == down )
 				glTranslatef(20,15,0), glRotatef( -90/ROLL_FACT*rolling_status, 0, 0, 1 ), glTranslatef(-20, -15, 0);
-		}
-		else if( init_dest == up ){
+			break;
+		case up:
 			if( Dest == down )
 				glTranslatef(20,15,0), glRotatef( 180/ROLL_FACT*rolling_status, 0, 0, 1 ), glTranslatef(-20, -15, 0);
 			else if( Dest == left )
 				glTranslatef(20,15,0), glRotatef( 90/ROLL_FACT*rolling_status, 0, 0, 1 ), glTranslatef(-20, -15, 0);
 			else if( Dest == right )
 				glTranslatef(20,15,0), glRotatef( -90/ROLL_FACT*rolling_status, 0, 0, 1 ), glTranslatef(-20, -15, 0);
-		}
-		else{	// initdest == down
+			break;
+		case down:
 			if( Dest == left )
 				glTranslatef(20,15,0), glRotatef( -90/ROLL_FACT*rolling_status, 0, 0, 1 ), glTranslatef(-20, -15, 0);
 			else if( Dest == up )
 				glTranslatef(20,15,0), glRotatef( 180/ROLL_FACT*rolling_status, 0, 0, 1 ), glTranslatef(-20, -15, 0);
 			else if( Dest == right )
 				glTranslatef(20,15,0), glRotatef( 90/ROLL_FACT*rolling_status, 0, 0, 1 ), glTranslatef(-20, -15, 0);
+			break;
 		}
-		if( rolling_status == ROLL_FACT )
-			init_dest = Dest;
 	}
 	glCallList( Body );	// draw body
 
@@ -247,5 +244,11 @@ void PathFinder::Draw()
 }
 
 void PathFinder::UpdateStatus() {
+	if (ismoving) Move();
+	if (rolling_status < ROLL_FACT) {
+		rolling_status++;
+		if (init_dest == Dest) rolling_status = ROLL_FACT;
+		if (rolling_status == ROLL_FACT) init_dest = Dest;
+	}
 	if(get_goal == true) goal_ceremony_status++;
 }
