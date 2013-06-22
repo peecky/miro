@@ -43,11 +43,6 @@ PathFinder::PathFinder(int x_position, int y_position, double HEIGHT, double WID
 	init_dest = Dest = right;
 }
 
-PathFinder::~PathFinder()
-{
-	delete recursion_stack;
-}
-
 void PathFinder::lists(){
 	glNewList( Arm, GL_COMPILE );
 		glBegin( GL_POLYGON );
@@ -145,33 +140,6 @@ void PathFinder::Move()
 		if( eye_status >= 30 )
 			eye_status = 0;
 	}
-}
-
-bool PathFinder::isMoving()
-{
-	return ismoving;
-}
-
-bool PathFinder::isStack_Empty()
-{
-	return stack_top == -1;
-}
-
-void PathFinder::Stack_Push(int dest)
-{
-	++stack_top;
-	recursion_stack[stack_top] = dest;
-}
-
-int PathFinder::Stack_Pop()
-{
-	if(stack_top == -1) return recursion_stack[stack_top+1];
-	else return recursion_stack[stack_top--];
-}
-
-int PathFinder::Stack_Top()
-{
-	return recursion_stack[stack_top];
 }
 
 void PathFinder::Draw()
@@ -278,19 +246,4 @@ void PathFinder::Draw()
 	if(get_goal == true) goal_ceremony_status++;
 
 	glLoadIdentity();
-}
-
-double PathFinder::CurrentX()
-{
-	return current_x;
-}
-
-double PathFinder::CurrentY()
-{
-	return current_y;
-}
-
-void PathFinder::Set_getgoal()
-{
-	get_goal = true;
 }

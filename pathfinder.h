@@ -14,24 +14,24 @@
 class PathFinder {
 public:
 	PathFinder(int x_position = 0.0, int y_position = 0.0, double HEIGHT = 10.0, double WIDTH = 10.0);
-	~PathFinder();
+	~PathFinder() { delete recursion_stack; }
 
-	bool isMoving();	// is it doing moving animation?
+	bool isMoving() { return ismoving; }	// is it doing moving animation?
 	void set_dest( int new_dest );
 	void Move();
 	void Draw();
 	// if animation is false, it doesn't move arm, leg and eye. Just draw
 	// if get_goal is true then do goal ceremony
 
-	double CurrentX();	// return x position of the finder
-	double CurrentY();	// return y position of the finder
-	void Set_getgoal();
+	double CurrentX() { return current_x; }	// return x position of the finder
+	double CurrentY() { return current_y; }	// return y position of the finder
+	void Set_getgoal() { get_goal = true; }
 
 	/* stack of path finding */
-	bool isStack_Empty();
-	void Stack_Push(int dest);
-	int Stack_Pop();
-	int Stack_Top();
+	bool isStack_Empty() { return stack_top == -1; }
+	void Stack_Push(int dest) { recursion_stack[++stack_top] = dest; }
+	int Stack_Pop() { return (stack_top == -1)? recursion_stack[stack_top+1]: recursion_stack[stack_top--]; }
+	int Stack_Top() { return recursion_stack[stack_top]; }
 private:
 	/* position and direction for path finding */
 	double current_x;
