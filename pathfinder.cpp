@@ -42,7 +42,6 @@ PathFinder::PathFinder(int x_position, int y_position, double HEIGHT, double WID
 	reviewpoint();
 	lists();
 	init_dest = Dest = right;
-	Draw();
 }
 
 PathFinder::~PathFinder()
@@ -147,7 +146,6 @@ void PathFinder::Move()
 		if( eye_status >= 30 )
 			eye_status = 0;
 	}
-	Draw();
 }
 
 bool PathFinder::isMoving()
@@ -179,23 +177,6 @@ int PathFinder::Stack_Top()
 
 void PathFinder::Draw()
 {
-	double x1;
-	/* draw the completed maze */
-	glClearColor( R, G, B, 0.0 );
-	glClear( GL_COLOR_BUFFER_BIT );
-	glColor3f( 1.0-R, 1.0-G, 1.0-B );
-	glBegin( GL_LINES );
-	for( x1 = 1 ; x1 < ::width+2 ; x1++ ){
-		glVertex2f( x1*10, 10.0 );
-		glVertex2f( x1*10, ::height*10+10.0 );
-	}
-	for( x1 = 1 ; x1 < ::height+2; x1++ ){
-		glVertex2f( 10.0 , x1*10 );
-		glVertex2f( ::width*10+10.0 , x1*10 );
-	}
-	glEnd();
-	draw_maze();
-
 	glLoadIdentity();
 	glTranslatef(current_x + SHIFTFACTOR_X, current_y + SHIFTFACTOR_Y, 0);
 	glScalef(height, width, 1);
@@ -298,7 +279,6 @@ void PathFinder::Draw()
 	if(get_goal == true) goal_ceremony_status++;
 
 	glLoadIdentity();
-	glutSwapBuffers();
 }
 
 double PathFinder::CurrentX()

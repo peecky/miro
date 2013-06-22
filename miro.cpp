@@ -224,7 +224,6 @@ void gen_maze(){
 		}
 	}
 	}
-	display();
 }
 
 void reshape( int w, int h ){
@@ -390,7 +389,6 @@ void goal_ceremony()
 	if(currTime - oldTime < timefactor * 0.1) return;
 
 	oldTime = currTime;
-	gb_finder->Draw();
 	count++;
 	if( count > 300) state++;
 }
@@ -462,11 +460,21 @@ void reviewpoint(bool draw)
 void idle()
 {
 	if( work == false ) return;
-	else if(state == 0) gen_maze();
-	else if(state == 1) path_finding();
-	else if(state == 2) goal_ceremony();
-	else if(state == 3) exit(0);
-	else return;
+	switch (state) {
+	case 0:
+		gen_maze();
+		break;
+	case 1:
+		path_finding();
+		break;
+	case 2:
+		goal_ceremony();
+		break;
+	case 3:
+		exit(0);
+		break;
+	}
+	display();
 }
 
 int main( int argc, char ** argv ){
