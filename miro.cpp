@@ -449,9 +449,9 @@ void reviewpoint()
 		}
 		else{
 			view_Left = 0.0 + move*10;
-			view_Right = 20 + width*10 + move*10;
+			view_Right = 20 + height*10 + move*10;
 			view_Bottom = 0.0;
-			view_Up = width*10 + 20;
+			view_Up = height*10 + 20;
 		}
 	}
 
