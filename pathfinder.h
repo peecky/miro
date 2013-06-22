@@ -43,7 +43,7 @@ private:
 	int Dest;
 	int init_dest;
 	bool get_goal;
-	
+
 	/* animation */
 	void lists();	// call list of the finder
 	bool ismoving;

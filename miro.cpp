@@ -42,13 +42,13 @@ static int timeGetTime() {
 }
 
 // remove the line between two connected cells
-void erase_wall( int x, int y, int dest ){	
-	
+void erase_wall( int x, int y, int dest ){
+
 	glColor3f( R, G, B );
 	glBegin( GL_LINES );
 
 	switch( dest ){
-	
+
 	case up:
 		glVertex2f( x*10+0.02, (y+1)*10 );
 		glVertex2f( (x+1)*10-0.02, (y+1)*10 );
@@ -115,7 +115,7 @@ void gen_maze(){
 		oldTime = currTime;
 	else return;
 
-	
+
 	if( length == 0 ){
 		// make start point and goal
 		dest = rand()%2 + 1;
@@ -153,12 +153,12 @@ void gen_maze(){
 
 	bool cellOpen = false;
 	while (!cellOpen) {
-		
+
 		tmp = chosen[ rand()%length ];	// randomly choose a cell which is visited
 		x = tmp % width;
 		if( x == 0 ) x = width;
 		y = ( tmp-1 )/width + 1;
-		
+
 		dest = rand()%4;	// choose a direction to connect a nearby cell
 		// if the cell on the direction has visited or is out of range
 		// then select a cell and a directon again
@@ -183,7 +183,7 @@ void gen_maze(){
 		case down:
 			if( y == 1 || cell[ x-1 ][ y-1 - 1 ].is_open == true )
 				continue;
-	
+
 			cell[ x-1 ][ y-1 - 1 ].is_open = true;
 
 			cell[ x-1 ][ y-1 - 1 ].road[ up ] = true;
@@ -211,7 +211,7 @@ void gen_maze(){
 		case left:
 			if( x == 1 || cell[ x-1 - 1 ][ y-1 ].is_open == true )
 				continue;
-		
+
 			cell[ x-1 - 1 ][ y-1 ].is_open = true;
 
 			cell[ x-1 - 1 ][ y-1 ].road[ right ] = true;
@@ -249,7 +249,7 @@ void reshape( int w, int h ){
 			view_Up = size*10 + 20;
 		}
 	}
-	
+
 	gluOrtho2D( view_Left, view_Right, view_Bottom, view_Up );
 
 	glMatrixMode (GL_MODELVIEW);
@@ -257,13 +257,13 @@ void reshape( int w, int h ){
 }
 
 void display()
-{	
+{
 	double x;
 
 	glClearColor( R, G, B, 0.0 );
 	glClear( GL_COLOR_BUFFER_BIT );
 	glColor3f( 1-R, 1-G, 1-B );	// the color is the negative of background color
-	
+
 	// draw default(unmaden) maze
 	glBegin( GL_LINES );
 	for( x = 1 ; x < width+2 ; x++ ){
@@ -310,7 +310,7 @@ void path_finding()
 	gb_finder = &finder;	// to use in other functions
 	static int x = ::starting_x;
 	static int y = ::starting_y;
-	
+
 	if(currTime - oldTime > timefactor)
 		oldTime = currTime;
 	else return;
@@ -335,7 +335,7 @@ void path_finding()
 			cell[x-1][y-1].is_open = true;
 			finder.Stack_Push(down);
 			return;
-		} 
+		}
 		else finder.Stack_Push(NOTDOWN);
 	}
 	if(finder.Stack_Top() == NOTDOWN) {
@@ -410,7 +410,7 @@ void view( int key, int x, int y ){
 	}
 
 	if( key == GLUT_KEY_HOME )
-		Over_view = true;	// set the whole maze can be seen 
+		Over_view = true;	// set the whole maze can be seen
 	if( key == GLUT_KEY_END )
 		Over_view = false;	// zoomed maze
 
@@ -420,7 +420,7 @@ void view( int key, int x, int y ){
 void reviewpoint(bool draw)
 {
 	if(gb_finder == NULL) return;	// if finder does not exist
-	
+
 	if( Over_view == true ){
 		double move = (width-height)/2.0;
 		if( width >= height ){
@@ -442,12 +442,12 @@ void reviewpoint(bool draw)
 		view_Right = gb_finder->CurrentX() + ViewFactor+ ViewChange_x;
 		view_Bottom = gb_finder->CurrentY() - (ViewFactor+10)+ ViewChange_y;
 		view_Up = gb_finder->CurrentY() + ViewFactor+ ViewChange_y;
-	}	
+	}
 	glMatrixMode (GL_PROJECTION);
 	glLoadIdentity ();
-	
+
 	gluOrtho2D( view_Left, view_Right, view_Bottom, view_Up );
-	
+
 	glMatrixMode (GL_MODELVIEW);
 	glLoadIdentity();
 
@@ -499,7 +499,7 @@ int main( int argc, char ** argv ){
 
 	cell = new Cell * [width];
 	for( int i = 0 ; i < width ; i++ )	cell[i] = new Cell[height];
-	
+
 	/* choose background color */
 	R = ( rand()%256 ) / 255.0;
 	G = ( rand()%256 ) / 255.0;
@@ -512,7 +512,7 @@ int main( int argc, char ** argv ){
 
 	glutInit( &argc, argv );
 	glutInitDisplayMode( GLUT_DOUBLE | GLUT_RGB );
-	glutInitWindowSize ( 500, 500 ); 
+	glutInitWindowSize ( 500, 500 );
 	glutInitWindowPosition (100, 100);
 	glutCreateWindow ("miro");
 	glutReshapeFunc( reshape );

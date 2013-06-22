@@ -138,9 +138,9 @@ void PathFinder::Move()
 		old_y = current_y;
 		ismoving = false;
 	}
-	
+
 	Draw( rolling_status == ROLL_FACT );	// if it is rotating then do not move the leg, arm and eye
-	
+
 }
 
 bool PathFinder::isMoving()
@@ -201,47 +201,47 @@ void PathFinder::Draw(bool animation)
 	glLoadIdentity();
 	glTranslatef(current_x + SHIFTFACTOR_X, current_y + SHIFTFACTOR_Y, 0);
 	glScalef(height, width, 1);
-	
+
 	glColor3f( 1.0-R, 1.0-G, 1.0-B );	// color of body
 	glTranslatef( 30, 50, 0 );
 
 	if( init_dest == left ) glTranslatef(20,15,0), glRotatef( 180, 0, 0, 1 ),glTranslatef(-20, -15, 0);
 	if( init_dest == up )   glTranslatef(20,15,0), glRotatef( 90, 0, 0, 1 ), glTranslatef(-20, -15, 0);
 	if( init_dest == down ) glTranslatef(20,15,0), glRotatef( -90, 0, 0, 1 ), glTranslatef(-20, -15, 0);
-	
+
 	if( rolling_status < ROLL_FACT ){
 		rolling_status++;
 
 		if( init_dest == Dest ) rolling_status = ROLL_FACT;	//if it is not need to roll
 		else if( init_dest == left ){
 			if( Dest == right )
-				glTranslatef(20,15,0), glRotatef( 180/ROLL_FACT*rolling_status, 0, 0, 1 ), glTranslatef(-20, -15, 0);	 
+				glTranslatef(20,15,0), glRotatef( 180/ROLL_FACT*rolling_status, 0, 0, 1 ), glTranslatef(-20, -15, 0);
 			else if( Dest == up )
-				glTranslatef(20,15,0), glRotatef( -90/ROLL_FACT*rolling_status, 0, 0, 1 ), glTranslatef(-20, -15, 0);	 
+				glTranslatef(20,15,0), glRotatef( -90/ROLL_FACT*rolling_status, 0, 0, 1 ), glTranslatef(-20, -15, 0);
 			else if( Dest == down )
 				glTranslatef(20,15,0), glRotatef( 90/ROLL_FACT*rolling_status, 0, 0, 1 ), glTranslatef(-20, -15, 0);
 		}
 		else if( init_dest == right ){
 			if( Dest == left )
-				glTranslatef(20,15,0), glRotatef( 180/ROLL_FACT*rolling_status, 0, 0, 1 ), glTranslatef(-20, -15, 0);	 
+				glTranslatef(20,15,0), glRotatef( 180/ROLL_FACT*rolling_status, 0, 0, 1 ), glTranslatef(-20, -15, 0);
 			else if( Dest == up )
-				glTranslatef(20,15,0), glRotatef( 90/ROLL_FACT*rolling_status, 0, 0, 1 ), glTranslatef(-20, -15, 0);	 
+				glTranslatef(20,15,0), glRotatef( 90/ROLL_FACT*rolling_status, 0, 0, 1 ), glTranslatef(-20, -15, 0);
 			else if( Dest == down )
 				glTranslatef(20,15,0), glRotatef( -90/ROLL_FACT*rolling_status, 0, 0, 1 ), glTranslatef(-20, -15, 0);
 		}
 		else if( init_dest == up ){
 			if( Dest == down )
-				glTranslatef(20,15,0), glRotatef( 180/ROLL_FACT*rolling_status, 0, 0, 1 ), glTranslatef(-20, -15, 0);	 
+				glTranslatef(20,15,0), glRotatef( 180/ROLL_FACT*rolling_status, 0, 0, 1 ), glTranslatef(-20, -15, 0);
 			else if( Dest == left )
-				glTranslatef(20,15,0), glRotatef( 90/ROLL_FACT*rolling_status, 0, 0, 1 ), glTranslatef(-20, -15, 0);	 
+				glTranslatef(20,15,0), glRotatef( 90/ROLL_FACT*rolling_status, 0, 0, 1 ), glTranslatef(-20, -15, 0);
 			else if( Dest == right )
 				glTranslatef(20,15,0), glRotatef( -90/ROLL_FACT*rolling_status, 0, 0, 1 ), glTranslatef(-20, -15, 0);
 		}
 		else{	// initdest == down
 			if( Dest == left )
-				glTranslatef(20,15,0), glRotatef( -90/ROLL_FACT*rolling_status, 0, 0, 1 ), glTranslatef(-20, -15, 0);	 
+				glTranslatef(20,15,0), glRotatef( -90/ROLL_FACT*rolling_status, 0, 0, 1 ), glTranslatef(-20, -15, 0);
 			else if( Dest == up )
-				glTranslatef(20,15,0), glRotatef( 180/ROLL_FACT*rolling_status, 0, 0, 1 ), glTranslatef(-20, -15, 0);	 
+				glTranslatef(20,15,0), glRotatef( 180/ROLL_FACT*rolling_status, 0, 0, 1 ), glTranslatef(-20, -15, 0);
 			else if( Dest == right )
 				glTranslatef(20,15,0), glRotatef( 90/ROLL_FACT*rolling_status, 0, 0, 1 ), glTranslatef(-20, -15, 0);
 		}
@@ -256,7 +256,7 @@ void PathFinder::Draw(bool animation)
 	glTranslatef( 23, 30, 0 );
 	if( eye_status >= 24 ) glScalef( 1, ( 30 - eye_status -1 )/6.0, 1);
 	glCallList( Eye );
-	
+
 	/* draw arms */
 	glPopMatrix();
 	glPushMatrix();
@@ -267,7 +267,7 @@ void PathFinder::Draw(bool animation)
 		//if( walk_status >= 0 ) glRotatef( 5*walk_status, 0, 0, 1 );
 		//else glRotatef( walk_status * -5 , 0, 0, 1 );
 	glCallList( Arm );
-	
+
 	glPopMatrix();
 	glPushMatrix();
 	glTranslatef( 5, 20, 0 );
@@ -277,7 +277,7 @@ void PathFinder::Draw(bool animation)
 		//if( walk_status >= 0 ) glRotatef( 5*walk_status, 0, 0, 1 );
 		//else glRotatef( walk_status * -5, 0, 0, 1 );
 	glCallList( Arm );
-	
+
 	/* draw legs */
 	glPopMatrix();
 	glPushMatrix();
@@ -286,7 +286,7 @@ void PathFinder::Draw(bool animation)
 		//if( walk_status >= 0 ) glRotatef( 7 * walk_status, 0, 0, 1 );
 		//else glRotatef( walk_status * -7 , 0, 0, 1 );
 	glCallList( Leg );
-	
+
 	glPopMatrix();
 	glPushMatrix();
 	glTranslatef( 8, 0, 0 );
