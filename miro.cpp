@@ -384,7 +384,12 @@ void path_finding()
 void goal_ceremony()
 {
 	static int count = 0;
+	static int oldTime = 0;
+	int currTime = timeGetTime();
 
+	if(currTime - oldTime < timefactor * 0.1) return;
+
+	oldTime = currTime;
 	gb_finder->Draw();
 	count++;
 	if( count > 300) state++;
