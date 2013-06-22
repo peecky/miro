@@ -16,7 +16,7 @@
 void display();
 void reviewpoint();
 
-Cell **cell;
+Cell *cell;
 int width, height;	// the size of maze
 int starting_x, starting_y;	// starting position
 int goal_x, goal_y;	// position of goal
@@ -40,6 +40,10 @@ static int timeGetTime() {
 		init_sec = tv.tv_sec;
 	}
 	return (tv.tv_sec - init_sec) * 1000 + tv.tv_usec / 1000;
+}
+
+static inline Cell & cellXY(int x, int y) {
+	return cell[x * width + y];
 }
 
 // remove the line between two connected cells
@@ -84,10 +88,10 @@ void draw_maze(){
 		if( x == 0 ) x = width;
 		y = ( i - 1 )/width + 1;
 
-		if( cell[ x-1 ][ y-1 ].road[right] == true )	erase_wall( x, y, right );
-		if( cell[ x-1 ][ y-1 ].road[up] ==true )		erase_wall( x, y, up );
-		if( cell[ x-1 ][ y-1 ].road[down] == true )	erase_wall( x, y, down );
-		if( cell[ x-1 ][ y-1 ].road[left] ==true )		erase_wall( x, y, left );
+		if( cellXY(x-1, y-1).road[right] == true )	erase_wall( x, y, right );
+		if( cellXY(x-1, y-1).road[up] ==true )		erase_wall( x, y, up );
+		if( cellXY(x-1, y-1).road[down] == true )	erase_wall( x, y, down );
+		if( cellXY(x-1, y-1).road[left] ==true )		erase_wall( x, y, left );
 	}
 }
 
@@ -106,7 +110,7 @@ void gen_maze(){
 		state = 1;
 		for(int i = 0; i < width; i++)
 			for(int j = 0; j < height; j++)
-				cell[i][j].is_open = false;
+				cellXY(i, j).is_open = false;
 		return;
 	}
 
@@ -124,28 +128,28 @@ void gen_maze(){
 			// starting point
 			starting_x = x = rand()%width+1;
 			starting_y = y = height;
-			cell[x-1][y-1].road[up] = true;
+			cellXY(x-1, y-1).road[up] = true;
 			// goal
 			goal_x = x = rand()%width+1;
 			goal_y = y = 1;
-			cell[x-1][y-1].road[down] = true;
+			cellXY(x-1, y-1).road[down] = true;
 		}
 		else{
 			// starting point
 			starting_x = x = width;
 			starting_y = y = rand()%height+1;
-			cell[x-1][y-1].road[right] = true;
+			cellXY(x-1, y-1).road[right] = true;
 			// goal
 			goal_x = x = 1;
 			goal_y = y = rand()%height+1;
-			cell[x-1][y-1].road[left] = true;
+			cellXY(x-1, y-1).road[left] = true;
 		}
 		chosen = new int [height * width];
 
 		// choose the first cell randomly
 		x = rand()%width+1;
 		y = rand()%height+1;
-		cell[x-1][y-1].is_open = true;
+		cellXY(x-1, y-1).is_open = true;
 		chosen[0] = width*(y-1) + x;	// store the first visited cell
 
 		length = 1;
@@ -166,13 +170,13 @@ void gen_maze(){
 			switch( dest ){
 
 			case up:
-				if( y == height || cell[ x-1 ][ y-1 + 1 ].is_open == true)
+				if( y == height || cellXY(x-1, y-1 + 1).is_open == true)
 					continue;
 
-				cell[ x-1 ][ y-1 + 1 ].is_open = true;
+				cellXY(x-1, y-1 + 1).is_open = true;
 
-				cell[ x-1 ][ y-1 + 1 ].road[ down ] = true;
-				cell[ x-1 ][ y-1 ].road[ up ] = true;
+				cellXY(x-1, y-1 + 1).road[ down ] = true;
+				cellXY(x-1, y-1).road[ up ] = true;
 
 				chosen[length] = width*( y-1 + 1 ) + x;
 				length++;
@@ -180,13 +184,13 @@ void gen_maze(){
 				break;
 
 			case down:
-				if( y == 1 || cell[ x-1 ][ y-1 - 1 ].is_open == true )
+				if( y == 1 || cellXY(x-1, y-1 - 1).is_open == true )
 					continue;
 
-				cell[ x-1 ][ y-1 - 1 ].is_open = true;
+				cellXY(x-1, y-1 - 1).is_open = true;
 
-				cell[ x-1 ][ y-1 - 1 ].road[ up ] = true;
-				cell[ x-1 ][ y-1 ].road[ down ] = true;
+				cellXY(x-1, y-1 - 1).road[ up ] = true;
+				cellXY(x-1, y-1).road[ down ] = true;
 
 				chosen[length] = width*(y-1 - 1) + x;
 				length++;
@@ -194,13 +198,13 @@ void gen_maze(){
 				break;
 
 			case right:
-				if( x == width || cell[ x-1 + 1 ][ y-1 ].is_open == true )
+				if( x == width || cellXY(x-1 + 1, y-1).is_open == true )
 					continue;
 
-				cell[ x-1 + 1 ][ y-1 ].is_open = true;
+				cellXY(x-1 + 1,  y-1).is_open = true;
 
-				cell[ x-1 + 1 ][ y-1 ].road[ left ] = true;
-				cell[ x-1 ][ y-1 ].road[ right ] = true;
+				cellXY(x-1 + 1,  y-1).road[ left ] = true;
+				cellXY(x-1,  y-1).road[ right ] = true;
 
 				chosen[length] = width * ( y-1 ) + x + 1;
 				length++;
@@ -208,13 +212,13 @@ void gen_maze(){
 				break;
 
 			case left:
-				if( x == 1 || cell[ x-1 - 1 ][ y-1 ].is_open == true )
+				if( x == 1 || cellXY(x-1 - 1,  y-1).is_open == true )
 					continue;
 
-				cell[ x-1 - 1 ][ y-1 ].is_open = true;
+				cellXY(x-1 - 1,  y-1).is_open = true;
 
-				cell[ x-1 - 1 ][ y-1 ].road[ right ] = true;
-				cell[ x-1 ][ y-1 ].road[ left ] = true;
+				cellXY(x-1 - 1,  y-1).road[ right ] = true;
+				cellXY(x-1,  y-1).road[ left ] = true;
 
 				chosen[length] = width * ( y-1 ) + x - 1;
 				length++;
@@ -329,42 +333,42 @@ void path_finding()
 		return;
 	}
 
-	cell[x-1][y-1].is_open = true;	// visit starting position
+	cellXY(x-1, y-1).is_open = true;	// visit starting position
 	if(finder.isStack_Empty() || finder.Stack_Top() < NOT_ANY_DIRECTION) {
-		if(cell[ x-1 ][ y-1 ].road[down] == true && y > 1 && cell[x-1][y-1 -1].is_open == false) {
+		if(cellXY(x-1,  y-1).road[down] == true && y > 1 && cellXY(x-1, y-1 -1).is_open == false) {
 			finder.set_dest(down);
 			y--;
-			cell[x-1][y-1].is_open = true;
+			cellXY(x-1, y-1).is_open = true;
 			finder.Stack_Push(down);
 			return;
 		}
 		else finder.Stack_Push(NOTDOWN);
 	}
 	if(finder.Stack_Top() == NOTDOWN) {
-		if(cell[x-1][y-1].road[left] == true && x > 1 && cell[x-1 -1][y-1].is_open == false) {
+		if(cellXY(x-1, y-1).road[left] == true && x > 1 && cellXY(x-1 -1, y-1).is_open == false) {
 			finder.set_dest(left);
 			x--;
-			cell[x-1][y-1].is_open = true;
+			cellXY(x-1, y-1).is_open = true;
 			finder.Stack_Push(left);
 			return;
 		}
 		else finder.Stack_Push(NOTLEFT);
 	}
 	if(finder.Stack_Top() == NOTLEFT) {
-		if(cell[x-1][y-1].road[right] == true && x < ::width && cell[x-1 +1][y-1].is_open == false) {
+		if(cellXY(x-1, y-1).road[right] == true && x < ::width && cellXY(x-1 +1, y-1).is_open == false) {
 			finder.set_dest(right);
 			x++;
-			cell[x-1][y-1].is_open = true;
+			cellXY(x-1, y-1).is_open = true;
 			finder.Stack_Push(right);
 			return;
 		}
 		else finder.Stack_Push(NOTRIGHT);
 	}
 	if(finder.Stack_Top() == NOTRIGHT) {
-		if(cell[x-1][y-1].road[up] == true && y < ::height && cell[x-1][y-1 +1].is_open == false) {
+		if(cellXY(x-1, y-1).road[up] == true && y < ::height && cellXY(x-1, y-1 +1).is_open == false) {
 			finder.set_dest(up);
 			y++;
-			cell[x-1][y-1].is_open = true;
+			cellXY(x-1, y-1).is_open = true;
 			finder.Stack_Push(up);
 			return;
 		}
@@ -523,8 +527,7 @@ int main( int argc, char ** argv ){
 	cout << "Del key   : initialize all(zoom, scroll, speed)" << endl;
 	cout << endl << "Check the newly created window!" << endl;
 
-	cell = new Cell * [width];
-	for( int i = 0 ; i < width ; i++ )	cell[i] = new Cell[height];
+	cell = new Cell[width * height];
 
 	/* choose background color */
 	R = ( rand()%256 ) / 255.0;
