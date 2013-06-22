@@ -39,7 +39,6 @@ PathFinder::PathFinder(int x_position, int y_position, double HEIGHT, double WID
 	goal_ceremony_status = 0;
 	degree_7 = sin(7 * atan(-1) / 180);	// sin( 7 * PI / 180)
 
-	reviewpoint();
 	lists();
 	init_dest = Dest = right;
 }

@@ -14,6 +14,7 @@
 #include "pathfinder.h"
 
 void display();
+void reviewpoint();
 
 Cell **cell;
 int width, height;	// the size of maze
@@ -297,7 +298,8 @@ void keyFunc( unsigned char key, int x, int y ){
 		ViewChange_x = 0;
 		ViewChange_y = 0;
 		timefactor = INIT_TIMEFACTOR;
-		reviewpoint(true);
+		reviewpoint();
+		display();
 	}
 }
 
@@ -417,10 +419,11 @@ void specialKeyFunc( int key, int x, int y ){
 	if( key == GLUT_KEY_END )
 		Over_view = false;	// zoomed maze
 
-	reviewpoint(true);
+	reviewpoint();
+	display();
 }
 
-void reviewpoint(bool draw)
+void reviewpoint()
 {
 	if(gb_finder == NULL) return;	// if finder does not exist
 
@@ -454,7 +457,7 @@ void reviewpoint(bool draw)
 	glMatrixMode (GL_MODELVIEW);
 	glLoadIdentity();
 
-	if(draw == true) gb_finder->Draw();	// for efficiency
+//	if(draw == true) gb_finder->Draw();	// for efficiency
 }
 
 void idle()
@@ -466,6 +469,7 @@ void idle()
 		break;
 	case 1:
 		path_finding();
+		reviewpoint();
 		break;
 	case 2:
 		goal_ceremony();
