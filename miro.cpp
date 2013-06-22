@@ -42,7 +42,7 @@ static int timeGetTime() {
 }
 
 // remove the line between two connected cells
-void open_road( int x, int y, int dest ){	
+void erase_wall( int x, int y, int dest ){	
 	
 	glColor3f( R, G, B );
 	glBegin( GL_LINES );
@@ -73,8 +73,7 @@ void open_road( int x, int y, int dest ){
 	glEnd();
 }
 
-// redraw the being created maze
-void make_maze(){
+void draw_maze(){
 
 	int i;
 	int x, y;
@@ -84,10 +83,10 @@ void make_maze(){
 		if( x == 0 ) x = width;
 		y = ( i - 1 )/width + 1;
 
-		if( cell[ x-1 ][ y-1 ].road[right] == true )	open_road( x, y, right );
-		if( cell[ x-1 ][ y-1 ].road[up] ==true )		open_road( x, y, up );
-		if( cell[ x-1 ][ y-1 ].road[down] == true )	open_road( x, y, down );
-		if( cell[ x-1 ][ y-1 ].road[left] ==true )		open_road( x, y, left );
+		if( cell[ x-1 ][ y-1 ].road[right] == true )	erase_wall( x, y, right );
+		if( cell[ x-1 ][ y-1 ].road[up] ==true )		erase_wall( x, y, up );
+		if( cell[ x-1 ][ y-1 ].road[down] == true )	erase_wall( x, y, down );
+		if( cell[ x-1 ][ y-1 ].road[left] ==true )		erase_wall( x, y, left );
 	}
 }
 
@@ -277,7 +276,7 @@ void display()
 	}
 	glEnd();
 
-	make_maze();
+	draw_maze();
 	if(gb_finder != NULL) gb_finder->Draw(false);
 
 	glutSwapBuffers();

@@ -187,7 +187,7 @@ void PathFinder::Draw(bool animation)
 		glVertex2f( ::width*10+10.0 , x1*10 );
 	}
 	glEnd();
-	make_maze();
+	draw_maze();
 
 	if(animation == true) {
 		walk_status++;

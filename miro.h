@@ -28,7 +28,7 @@ typedef struct Cell{
 	}
 } Cell;
 
-void make_maze();
+void draw_maze();
 void reviewpoint(bool draw = false);
 
 #endif
