@@ -20,6 +20,7 @@ public:
 	void set_dest( int new_dest );
 	void Move();
 	void Draw();
+	void UpdateStatus();
 	// if animation is false, it doesn't move arm, leg and eye. Just draw
 	// if get_goal is true then do goal ceremony
 

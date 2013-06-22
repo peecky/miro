@@ -243,7 +243,9 @@ void PathFinder::Draw()
 	glCallList( Leg );
 	glPopMatrix();
 
-	if(get_goal == true) goal_ceremony_status++;
-
 	glLoadIdentity();
+}
+
+void PathFinder::UpdateStatus() {
+	if(get_goal == true) goal_ceremony_status++;
 }

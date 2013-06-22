@@ -388,11 +388,12 @@ void goal_ceremony()
 	static int oldTime = 0;
 	int currTime = timeGetTime();
 
-	if(currTime - oldTime < timefactor * 0.1) return;
+	if(currTime - oldTime < timefactor * 0.2) return;
 
 	oldTime = currTime;
 	count++;
 	if( count > 300) state++;
+	gb_finder->UpdateStatus();
 }
 
 void specialKeyFunc( int key, int x, int y ){
