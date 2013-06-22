@@ -317,7 +317,6 @@ void path_finding()
 	else return;
 
 	if(finder.isMoving() == true ) {	// if it is doing animation
-		reviewpoint();
 		finder.Move();	// moving animation
 		return;
 	}
@@ -457,8 +456,6 @@ void reviewpoint()
 
 	glMatrixMode (GL_MODELVIEW);
 	glLoadIdentity();
-
-//	if(draw == true) gb_finder->Draw();	// for efficiency
 }
 
 void idle()
