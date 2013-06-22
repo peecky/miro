@@ -151,79 +151,77 @@ void gen_maze(){
 		length = 1;
 	}
 	else {
+		bool cellOpen = false;
+		while (!cellOpen) {
+			tmp = chosen[ rand()%length ];	// randomly choose a cell which is visited
+			x = tmp % width;
+			if( x == 0 ) x = width;
+			y = ( tmp-1 )/width + 1;
 
-	bool cellOpen = false;
-	while (!cellOpen) {
+			dest = rand()%4;	// choose a direction to connect a nearby cell
+			// if the cell on the direction has visited or is out of range
+			// then select a cell and a directon again
+			// if not, connect two cells and store the new cell(the cell on the direction)
+			// to the array chosen(visited cells)
+			switch( dest ){
 
-		tmp = chosen[ rand()%length ];	// randomly choose a cell which is visited
-		x = tmp % width;
-		if( x == 0 ) x = width;
-		y = ( tmp-1 )/width + 1;
+			case up:
+				if( y == height || cell[ x-1 ][ y-1 + 1 ].is_open == true)
+					continue;
 
-		dest = rand()%4;	// choose a direction to connect a nearby cell
-		// if the cell on the direction has visited or is out of range
-		// then select a cell and a directon again
-		// if not, connect two cells and store the new cell(the cell on the direction)
-		// to the array chosen(visited cells)
-		switch( dest ){
+				cell[ x-1 ][ y-1 + 1 ].is_open = true;
 
-		case up:
-			if( y == height || cell[ x-1 ][ y-1 + 1 ].is_open == true)
-				continue;
+				cell[ x-1 ][ y-1 + 1 ].road[ down ] = true;
+				cell[ x-1 ][ y-1 ].road[ up ] = true;
 
-			cell[ x-1 ][ y-1 + 1 ].is_open = true;
+				chosen[length] = width*( y-1 + 1 ) + x;
+				length++;
+				cellOpen = true;
+				break;
 
-			cell[ x-1 ][ y-1 + 1 ].road[ down ] = true;
-			cell[ x-1 ][ y-1 ].road[ up ] = true;
+			case down:
+				if( y == 1 || cell[ x-1 ][ y-1 - 1 ].is_open == true )
+					continue;
 
-			chosen[length] = width*( y-1 + 1 ) + x;
-			length++;
-			cellOpen = true;
-			break;
+				cell[ x-1 ][ y-1 - 1 ].is_open = true;
 
-		case down:
-			if( y == 1 || cell[ x-1 ][ y-1 - 1 ].is_open == true )
-				continue;
+				cell[ x-1 ][ y-1 - 1 ].road[ up ] = true;
+				cell[ x-1 ][ y-1 ].road[ down ] = true;
 
-			cell[ x-1 ][ y-1 - 1 ].is_open = true;
+				chosen[length] = width*(y-1 - 1) + x;
+				length++;
+				cellOpen = true;
+				break;
 
-			cell[ x-1 ][ y-1 - 1 ].road[ up ] = true;
-			cell[ x-1 ][ y-1 ].road[ down ] = true;
+			case right:
+				if( x == width || cell[ x-1 + 1 ][ y-1 ].is_open == true )
+					continue;
 
-			chosen[length] = width*(y-1 - 1) + x;
-			length++;
-			cellOpen = true;
-			break;
+				cell[ x-1 + 1 ][ y-1 ].is_open = true;
 
-		case right:
-			if( x == width || cell[ x-1 + 1 ][ y-1 ].is_open == true )
-				continue;
+				cell[ x-1 + 1 ][ y-1 ].road[ left ] = true;
+				cell[ x-1 ][ y-1 ].road[ right ] = true;
 
-			cell[ x-1 + 1 ][ y-1 ].is_open = true;
+				chosen[length] = width * ( y-1 ) + x + 1;
+				length++;
+				cellOpen = true;
+				break;
 
-			cell[ x-1 + 1 ][ y-1 ].road[ left ] = true;
-			cell[ x-1 ][ y-1 ].road[ right ] = true;
+			case left:
+				if( x == 1 || cell[ x-1 - 1 ][ y-1 ].is_open == true )
+					continue;
 
-			chosen[length] = width * ( y-1 ) + x + 1;
-			length++;
-			cellOpen = true;
-			break;
+				cell[ x-1 - 1 ][ y-1 ].is_open = true;
 
-		case left:
-			if( x == 1 || cell[ x-1 - 1 ][ y-1 ].is_open == true )
-				continue;
+				cell[ x-1 - 1 ][ y-1 ].road[ right ] = true;
+				cell[ x-1 ][ y-1 ].road[ left ] = true;
 
-			cell[ x-1 - 1 ][ y-1 ].is_open = true;
-
-			cell[ x-1 - 1 ][ y-1 ].road[ right ] = true;
-			cell[ x-1 ][ y-1 ].road[ left ] = true;
-
-			chosen[length] = width * ( y-1 ) + x - 1;
-			length++;
-			cellOpen = true;
-			break;
+				chosen[length] = width * ( y-1 ) + x - 1;
+				length++;
+				cellOpen = true;
+				break;
+			}
 		}
-	}
 	}
 }
 
