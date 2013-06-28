@@ -28,7 +28,7 @@ static PathFinder* gb_finder = NULL;	// path finder object
 static bool Over_view = false;
 
 static int view_Left, view_Right, view_Bottom, view_Up;	//view points
-static int ViewFactor;
+static int ViewZoomFactor;
 static int ViewChange_x, ViewChange_y;
 static int timefactor;		// controls duration
 
@@ -305,7 +305,7 @@ void keyFunc( unsigned char key, int x, int y ){
 		break;
 	case 0x7f:	// initialzing all factors, (delete key)
 		Over_view = false;
-		ViewFactor = 20;
+		ViewZoomFactor = 20;
 		ViewChange_x = 0;
 		ViewChange_y = 0;
 		timefactor = INIT_TIMEFACTOR;
@@ -423,13 +423,13 @@ void specialKeyFunc( int key, int x, int y ){
 		if (ViewChange_y < height * 5) ViewChange_y += 5;	// scroll the maze up
 		break;
 	case GLUT_KEY_PAGE_DOWN:
-		if (ViewFactor < ((width>height)? width * 5 : height * 5)) ViewFactor += 5;	// zoom in
+		if (ViewZoomFactor < ((width>height)? width * 5 : height * 5)) ViewZoomFactor += 5;	// zoom in
 		break;
 	case GLUT_KEY_PAGE_UP:
-		if (ViewFactor > 0) ViewFactor -= 5;	// zoom out
+		if (ViewZoomFactor > 0) ViewZoomFactor -= 5;	// zoom out
 		break;
 	case GLUT_KEY_INSERT:	// initializing viewing
-		ViewFactor = 20;
+		ViewZoomFactor = 20;
 		ViewChange_x = 0;
 		ViewChange_y = 0;
 		break;
@@ -466,10 +466,10 @@ void reviewpoint()
 	}
 
 	else{
-		view_Left = gb_finder->CurrentX() - (ViewFactor+10)+ ViewChange_x;
-		view_Right = gb_finder->CurrentX() + ViewFactor+ ViewChange_x;
-		view_Bottom = gb_finder->CurrentY() - (ViewFactor+10)+ ViewChange_y;
-		view_Up = gb_finder->CurrentY() + ViewFactor+ ViewChange_y;
+		view_Left = gb_finder->CurrentX() - (ViewZoomFactor+10)+ ViewChange_x;
+		view_Right = gb_finder->CurrentX() + ViewZoomFactor+ ViewChange_x;
+		view_Bottom = gb_finder->CurrentY() - (ViewZoomFactor+10)+ ViewChange_y;
+		view_Up = gb_finder->CurrentY() + ViewZoomFactor+ ViewChange_y;
 	}
 	glMatrixMode (GL_PROJECTION);
 	glLoadIdentity ();
@@ -544,7 +544,7 @@ int main( int argc, char ** argv ){
 	timefactor = INIT_TIMEFACTOR;
 	ViewChange_x = 0;
 	ViewChange_y = 0;
-	ViewFactor = 20;
+	ViewZoomFactor = 20;
 
 	glutInit( &argc, argv );
 	glutInitDisplayMode( GLUT_DOUBLE | GLUT_RGB );
