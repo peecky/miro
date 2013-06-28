@@ -24,8 +24,8 @@ void PathFinder::set_dest( int new_dest ){
 
 PathFinder::PathFinder(int x_position, int y_position, double HEIGHT, double WIDTH)
 {
-	old_x = current_x = 10.0 + 10.0 * x_position;
-	old_y = current_y = 10.0 + 10.0 * y_position;
+	old_x = current_x = 20.0 + 10.0 * x_position;
+	old_y = current_y = 20.0 + 10.0 * y_position;
 	height = HEIGHT;
 	width = WIDTH;
 	recursion_stack = new int[::width * ::height * 4];	// size of worst case

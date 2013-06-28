@@ -124,23 +124,23 @@ void gen_maze(){
 		dest = rand()%2 + 1;
 		if( dest == down ){
 			// starting point
-			starting_x = x = rand()%width+1;
-			starting_y = y = height;
-			cellXY(x-1, y-1).road[up] = true;
+			starting_x = x = rand()%width;
+			starting_y = y = height - 1;
+			cellXY(x, y).road[up] = true;
 			// goal
-			goal_x = x = rand()%width+1;
-			goal_y = y = 1;
-			cellXY(x-1, y-1).road[down] = true;
+			goal_x = x = rand()%width;
+			goal_y = y = 0;
+			cellXY(x, y).road[down] = true;
 		}
 		else{
 			// starting point
-			starting_x = x = width;
-			starting_y = y = rand()%height+1;
-			cellXY(x-1, y-1).road[right] = true;
+			starting_x = x = width - 1;
+			starting_y = y = rand()%height;
+			cellXY(x, y).road[right] = true;
 			// goal
-			goal_x = x = 1;
-			goal_y = y = rand()%height+1;
-			cellXY(x-1, y-1).road[left] = true;
+			goal_x = x = 0;
+			goal_y = y = rand()%height;
+			cellXY(x, y).road[left] = true;
 		}
 		chosen = new int [height * width];
 
@@ -329,42 +329,42 @@ void path_finding()
 		return;
 	}
 
-	cellXY(x-1, y-1).is_open = true;	// visit starting position
+	cellXY(x, y).is_open = true;	// visit starting position
 	if(finder.isStack_Empty() || finder.Stack_Top() < NOT_ANY_DIRECTION) {
-		if(cellXY(x-1,  y-1).road[down] == true && y > 1 && cellXY(x-1, y-1 -1).is_open == false) {
+		if(cellXY(x,  y).road[down] == true && y > 0 && cellXY(x, y-1).is_open == false) {
 			finder.set_dest(down);
 			y--;
-			cellXY(x-1, y-1).is_open = true;
+			cellXY(x, y).is_open = true;
 			finder.Stack_Push(down);
 			return;
 		}
 		else finder.Stack_Push(NOTDOWN);
 	}
 	if(finder.Stack_Top() == NOTDOWN) {
-		if(cellXY(x-1, y-1).road[left] == true && x > 1 && cellXY(x-1 -1, y-1).is_open == false) {
+		if(cellXY(x, y).road[left] == true && x > 0 && cellXY(x-1, y).is_open == false) {
 			finder.set_dest(left);
 			x--;
-			cellXY(x-1, y-1).is_open = true;
+			cellXY(x, y).is_open = true;
 			finder.Stack_Push(left);
 			return;
 		}
 		else finder.Stack_Push(NOTLEFT);
 	}
 	if(finder.Stack_Top() == NOTLEFT) {
-		if(cellXY(x-1, y-1).road[right] == true && x < ::width && cellXY(x-1 +1, y-1).is_open == false) {
+		if(cellXY(x, y).road[right] == true && x < ::width-1 && cellXY(x+1, y).is_open == false) {
 			finder.set_dest(right);
 			x++;
-			cellXY(x-1, y-1).is_open = true;
+			cellXY(x, y).is_open = true;
 			finder.Stack_Push(right);
 			return;
 		}
 		else finder.Stack_Push(NOTRIGHT);
 	}
 	if(finder.Stack_Top() == NOTRIGHT) {
-		if(cellXY(x-1, y-1).road[up] == true && y < ::height && cellXY(x-1, y-1 +1).is_open == false) {
+		if(cellXY(x, y).road[up] == true && y < ::height-1 && cellXY(x, y+1).is_open == false) {
 			finder.set_dest(up);
 			y++;
-			cellXY(x-1, y-1).is_open = true;
+			cellXY(x, y).is_open = true;
 			finder.Stack_Push(up);
 			return;
 		}
