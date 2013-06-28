@@ -26,6 +26,8 @@ static bool work;			// making maze(true) or pause(false)
 static int state = 0;		// current state(making maze, finding path or end)
 static PathFinder* gb_finder = NULL;	// path finder object
 static bool Over_view = false;
+static bool autoMode = false;
+static int userInputLastDirection = -1;
 
 static int view_Left, view_Right, view_Bottom, view_Up;	//view points
 static int ViewZoomFactor;
@@ -355,6 +357,7 @@ void path_finding()
 		return;
 	}
 
+	if (autoMode) {
 	cellXY(x, y).is_open = true;	// visit starting position
 	if(finder.isStack_Empty() || finder.Stack_Top() < NOT_ANY_DIRECTION) {
 		if(cellXY(x,  y).road[down] == true && y > 0 && cellXY(x, y-1).is_open == false) {
@@ -407,6 +410,38 @@ void path_finding()
 	else if(temp_dest == left) x++, finder.set_dest(PathFinder::RIGHT);
 	else if(temp_dest == right) x--, finder.set_dest(PathFinder::LEFT);
 	else if(temp_dest == up) y--, finder.set_dest(PathFinder::DOWN);
+	}
+	else {
+		if (userInputLastDirection > -1) {
+			switch (userInputLastDirection) {
+			case up:
+				if(cellXY(x, y).road[up] == true && y < ::height-1 && cellXY(x, y+1).is_open == false) {
+					finder.set_dest(PathFinder::UP);
+					y++;
+				}
+				break;
+			case down:
+				if(cellXY(x,  y).road[down] == true && y > 0 && cellXY(x, y-1).is_open == false) {
+					finder.set_dest(PathFinder::DOWN);
+					y--;
+				}
+				break;
+			case right:
+				if(cellXY(x, y).road[right] == true && x < ::width-1 && cellXY(x+1, y).is_open == false) {
+					finder.set_dest(PathFinder::RIGHT);
+					x++;
+				}
+				break;
+			case left:
+				if(cellXY(x, y).road[left] == true && x > 0 && cellXY(x-1, y).is_open == false) {
+					finder.set_dest(PathFinder::LEFT);
+					x--;
+				}
+				break;
+			}
+			userInputLastDirection = -1;
+		}
+	}
 }
 
 void goal_ceremony()
@@ -426,16 +461,16 @@ void goal_ceremony()
 void specialKeyFunc( int key, int x, int y ){
 	switch (key) {
 	case GLUT_KEY_RIGHT:
-		if (ViewChange_x < width * 5) ViewChange_x += 5;	// scroll the maze right
+		userInputLastDirection = right;
 		break;
 	case GLUT_KEY_LEFT:
-		if (ViewChange_x > width * -5) ViewChange_x -= 5;	// scroll the maze left
+		userInputLastDirection = left;
 		break;
 	case GLUT_KEY_DOWN:
-		if (ViewChange_y > height * -5) ViewChange_y -= 5;	// scroll the maze down
+		userInputLastDirection = down;
 		break;
 	case GLUT_KEY_UP:
-		if (ViewChange_y < height * 5) ViewChange_y += 5;	// scroll the maze up
+		userInputLastDirection = up;
 		break;
 	case GLUT_KEY_PAGE_DOWN:
 		if (ViewZoomFactor < ((width>height)? width * 5 : height * 5)) ViewZoomFactor += 5;	// zoom in
@@ -541,7 +576,7 @@ int main( int argc, char ** argv ){
 	cout << " + key    : increasing speed" << endl;
 	cout << " - key    : decreasing speed" << endl;
 	cout << "w a s d   : scroll the maze" << endl;
-	cout << "Arrow key : scroll the maze" << endl;
+	cout << "Arrow key : move the character" << endl;
 	cout << "Page Up   : Zoom in" << endl;
 	cout << "Page Down : Zoom out" << endl;
 	cout << "Home key  : Over view the maze" << endl;
