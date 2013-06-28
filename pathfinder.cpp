@@ -22,12 +22,10 @@ void PathFinder::set_dest( int new_dest ){
 	ismoving =true;
 }
 
-PathFinder::PathFinder(int x_position, int y_position, double HEIGHT, double WIDTH)
+PathFinder::PathFinder(int x_position, int y_position)
 {
 	old_x = current_x = 20.0 + 10.0 * x_position;
 	old_y = current_y = 20.0 + 10.0 * y_position;
-	height = HEIGHT;
-	width = WIDTH;
 	recursion_stack = new int[::width * ::height * 4];	// size of worst case
 	stack_top = -1;
 
@@ -144,13 +142,9 @@ void PathFinder::Move()
 
 void PathFinder::Draw()
 {
-	glLoadIdentity();
-	glTranslatef(current_x + SHIFTFACTOR_X, current_y + SHIFTFACTOR_Y, 0);
-	glScalef(height, width, 1);
-
-	glColor3f( 1.0-R, 1.0-G, 1.0-B );	// color of body
 	glTranslatef( 30, 50, 0 );
 
+	// draw body
 	double rotateAngle = 0;
 	switch (init_dest) {
 	case left:
@@ -163,7 +157,6 @@ void PathFinder::Draw()
 		rotateAngle = -90.0;
 		break;
 	}
-
 	if( rolling_status < ROLL_FACT ){
 		switch (init_dest) {
 		case left:
@@ -203,7 +196,8 @@ void PathFinder::Draw()
 	glTranslatef(20,15,0);
 	glRotatef(rotateAngle, 0, 0, 1);
 	glTranslatef(-20, -15, 0);
-	glCallList( Body );	// draw body
+	glColor3f( 1.0-R, 1.0-G, 1.0-B );
+	glCallList( Body );
 
 	glPushMatrix();
 

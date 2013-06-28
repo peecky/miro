@@ -1,9 +1,6 @@
 #ifndef __AnoPi_PATHFINDER_H__
 #define __AnoPi_PATHFINDER_H__
 
-#define SHIFTFACTOR_X -10.0
-#define SHIFTFACTOR_Y -11.5
-
 #define Body 4
 #define Arm  1
 #define Leg  2
@@ -13,7 +10,7 @@
 
 class PathFinder {
 public:
-	PathFinder(int x_position = 0.0, int y_position = 0.0, double HEIGHT = 10.0, double WIDTH = 10.0);
+	PathFinder(int x_position = 0.0, int y_position = 0.0);
 	~PathFinder() { delete recursion_stack; }
 
 	bool isMoving() { return ismoving; }	// is it doing moving animation?
@@ -39,8 +36,6 @@ private:
 	double current_y;
 	double old_x;
 	double old_y;
-	double height;	// height of finder
-	double width;	// width of finder
 	int Dest;
 	int init_dest;
 	bool get_goal;

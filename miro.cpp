@@ -275,7 +275,16 @@ void display()
 	glEnd();
 
 	draw_maze();
-	if(gb_finder != NULL) gb_finder->Draw();
+
+	if(gb_finder != NULL) {
+		const double SHIFTFACTOR_X = -10.0;
+		const double SHIFTFACTOR_Y = -11.5;
+
+		glLoadIdentity();
+		glTranslatef(gb_finder->CurrentX() + SHIFTFACTOR_X, gb_finder->CurrentY() + SHIFTFACTOR_Y, 0);
+		glScalef(0.1, 0.1, 1);
+		gb_finder->Draw();
+	}
 
 	glutSwapBuffers();
 }
@@ -309,7 +318,7 @@ void path_finding()
 {
 	static int oldTime;
 	int currTime = timeGetTime();
-	static PathFinder finder(::starting_x, ::starting_y, 0.1, 0.1);
+	static PathFinder finder(::starting_x, ::starting_y);
 	gb_finder = &finder;	// to use in other functions
 	static int x = ::starting_x;
 	static int y = ::starting_y;
