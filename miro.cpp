@@ -312,6 +312,18 @@ void keyFunc( unsigned char key, int x, int y ){
 		reviewpoint();
 		display();
 		break;
+	case 'w':
+		if (ViewChange_y < height * 5) ViewChange_y += 5;	// scroll the maze up
+		break;
+	case 'a':
+		if (ViewChange_x > width * -5) ViewChange_x -= 5;	// scroll the maze left
+		break;
+	case 's':
+		if (ViewChange_y > height * -5) ViewChange_y -= 5;	// scroll the maze down
+		break;
+	case 'd':
+		if (ViewChange_x < width * 5) ViewChange_x += 5;	// scroll the maze right
+		break;
 	}
 }
 
@@ -525,6 +537,7 @@ int main( int argc, char ** argv ){
 	cout << "Space bar : start/stop working" << endl;
 	cout << " + key    : increasing speed" << endl;
 	cout << " - key    : decreasing speed" << endl;
+	cout << "w a s d   : scroll the maze" << endl;
 	cout << "Arrow key : scroll the maze" << endl;
 	cout << "Page Up   : Zoom in" << endl;
 	cout << "Page Down : Zoom out" << endl;
