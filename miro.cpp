@@ -16,21 +16,21 @@
 void display();
 void reviewpoint();
 
-Cell *cell;
-int width, height;	// the size of maze
-int starting_x, starting_y;	// starting position
-int goal_x, goal_y;	// position of goal
-double R, G, B;		// the color of background
-int *chosen;		// the pointer of array of connected cells
-bool work;			// making maze(true) or pause(false)
-int state = 0;		// current state(making maze, finding path or end)
-PathFinder* gb_finder = NULL;	// path finder object
-bool Over_view = false;
+static Cell *cell;
+static int width, height;	// the size of maze
+static int starting_x, starting_y;	// starting position
+static int goal_x, goal_y;	// position of goal
+static double R, G, B;		// the color of background
+static int *chosen;		// the pointer of array of connected cells
+static bool work;			// making maze(true) or pause(false)
+static int state = 0;		// current state(making maze, finding path or end)
+static PathFinder* gb_finder = NULL;	// path finder object
+static bool Over_view = false;
 
-int view_Left, view_Right, view_Bottom, view_Up;	//view points
-int ViewFactor;
-int ViewChange_x, ViewChange_y;
-int timefactor;		// controls duration
+static int view_Left, view_Right, view_Bottom, view_Up;	//view points
+static int ViewFactor;
+static int ViewChange_x, ViewChange_y;
+static int timefactor;		// controls duration
 
 static int timeGetTime() {
 	static time_t init_sec = 0;
@@ -263,6 +263,7 @@ void display()
 	glColor3f( 1-R, 1-G, 1-B );	// the color is the negative of background color
 
 	// draw default(unmaden) maze
+	glLoadIdentity();
 	glBegin( GL_LINES );
 	for( x = 1 ; x < width+2 ; x++ ){
 		glVertex2f( x*10, 10.0 );
@@ -318,8 +319,9 @@ void path_finding()
 {
 	static int oldTime;
 	int currTime = timeGetTime();
-	static PathFinder finder(::starting_x, ::starting_y);
+	static PathFinder finder(::starting_x, ::starting_y, ::width, ::height);
 	gb_finder = &finder;	// to use in other functions
+	finder.SetBodyColor(1.0-R, 1.0-G, 1.0-B);
 	static int x = ::starting_x;
 	static int y = ::starting_y;
 

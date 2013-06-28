@@ -12,9 +12,6 @@
 #include "pathfinder.h"
 #include "miro.h"
 
-extern double R, G, B;		// the color of background
-extern int width, height;	// the size of maze
-
 void PathFinder::set_dest( int new_dest ){
 	this->init_dest = Dest;
 	this->Dest = new_dest;
@@ -22,11 +19,11 @@ void PathFinder::set_dest( int new_dest ){
 	ismoving =true;
 }
 
-PathFinder::PathFinder(int x_position, int y_position)
+PathFinder::PathFinder(int x_position, int y_position, int maze_width, int maze_height)
 {
 	old_x = current_x = 20.0 + 10.0 * x_position;
 	old_y = current_y = 20.0 + 10.0 * y_position;
-	recursion_stack = new int[::width * ::height * 4];	// size of worst case
+	recursion_stack = new int[maze_width * maze_height * 4];	// size of worst case
 	stack_top = -1;
 
 	/* initialzing status factor */
@@ -196,7 +193,7 @@ void PathFinder::Draw()
 	glTranslatef(20,15,0);
 	glRotatef(rotateAngle, 0, 0, 1);
 	glTranslatef(-20, -15, 0);
-	glColor3f( 1.0-R, 1.0-G, 1.0-B );
+	glColor3f( bodyColorR, bodyColorG, bodyColorB );
 	glCallList( Body );
 
 	glPushMatrix();
@@ -245,8 +242,6 @@ void PathFinder::Draw()
 		//else glRotatef( walk_status * -7 , 0, 0, 1 );
 	glCallList( Leg );
 	glPopMatrix();
-
-	glLoadIdentity();
 }
 
 void PathFinder::UpdateStatus() {

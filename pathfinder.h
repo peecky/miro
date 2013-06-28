@@ -10,12 +10,13 @@
 
 class PathFinder {
 public:
-	PathFinder(int x_position = 0.0, int y_position = 0.0);
+	PathFinder(int x_position, int y_position, int maze_width, int maze_height);
 	~PathFinder() { delete recursion_stack; }
 
 	bool isMoving() { return ismoving; }	// is it doing moving animation?
 	void set_dest( int new_dest );
 	void Move();
+	void SetBodyColor(double r, double g, double b)	{ bodyColorR = r; bodyColorG = g, bodyColorB = b; }
 	void Draw();
 	void UpdateStatus();
 	// if animation is false, it doesn't move arm, leg and eye. Just draw
@@ -48,6 +49,9 @@ private:
 	int eye_status;		// for face animation
 	int rolling_status;	// for rotate animation
 	int goal_ceremony_status;	// for goal ceremony
+	double bodyColorR;
+	double bodyColorG;
+	double bodyColorB;
 
 	/* stack of path finding */
 	int* recursion_stack;
