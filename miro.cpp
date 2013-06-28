@@ -332,14 +332,17 @@ void path_finding()
 	static int oldTime;
 	int currTime = timeGetTime();
 	static PathFinder finder(::starting_x, ::starting_y, ::width, ::height);
-	gb_finder = &finder;	// to use in other functions
-	finder.SetBodyColor(1.0-R, 1.0-G, 1.0-B);
 	static int x = ::starting_x;
 	static int y = ::starting_y;
 
 	if(currTime - oldTime > timefactor)
 		oldTime = currTime;
 	else return;
+
+	if (gb_finder == NULL) {
+		gb_finder = &finder;	// to use in other functions
+		finder.SetBodyColor(1.0-R, 1.0-G, 1.0-B);
+	}
 
 	finder.UpdateStatus();
 	if(finder.isMoving()) {
