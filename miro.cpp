@@ -9,6 +9,7 @@
 #include <iostream>
 #include <ctime>
 #include <sys/time.h>
+#include <cstring>
 
 #include "miro.h"
 #include "pathfinder.h"
@@ -553,6 +554,14 @@ void idle()
 
 int main( int argc, char ** argv ){
 	using namespace std;
+
+	if (argc > 1) {
+		if (strcmp(argv[1], "--auto") == 0) autoMode = true;
+		else if (strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help") == 0) {
+			cout << "usage: " << argv[0] << " [--auto]" << endl;
+			return 0;
+		}
+	}
 
 	srand( ( unsigned )time( NULL ) );
 
