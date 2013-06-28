@@ -13,7 +13,7 @@
 
 
 
-#define INIT_TIMEFACTOR 30
+#define INIT_TIMEFACTOR 20
 
 typedef struct Cell{
 	bool is_open;	// has this cell visited for making maze
