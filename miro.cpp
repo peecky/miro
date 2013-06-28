@@ -343,7 +343,7 @@ void path_finding()
 	cellXY(x, y).is_open = true;	// visit starting position
 	if(finder.isStack_Empty() || finder.Stack_Top() < NOT_ANY_DIRECTION) {
 		if(cellXY(x,  y).road[down] == true && y > 0 && cellXY(x, y-1).is_open == false) {
-			finder.set_dest(down);
+			finder.set_dest(PathFinder::DOWN);
 			y--;
 			cellXY(x, y).is_open = true;
 			finder.Stack_Push(down);
@@ -353,7 +353,7 @@ void path_finding()
 	}
 	if(finder.Stack_Top() == NOTDOWN) {
 		if(cellXY(x, y).road[left] == true && x > 0 && cellXY(x-1, y).is_open == false) {
-			finder.set_dest(left);
+			finder.set_dest(PathFinder::LEFT);
 			x--;
 			cellXY(x, y).is_open = true;
 			finder.Stack_Push(left);
@@ -363,7 +363,7 @@ void path_finding()
 	}
 	if(finder.Stack_Top() == NOTLEFT) {
 		if(cellXY(x, y).road[right] == true && x < ::width-1 && cellXY(x+1, y).is_open == false) {
-			finder.set_dest(right);
+			finder.set_dest(PathFinder::RIGHT);
 			x++;
 			cellXY(x, y).is_open = true;
 			finder.Stack_Push(right);
@@ -373,7 +373,7 @@ void path_finding()
 	}
 	if(finder.Stack_Top() == NOTRIGHT) {
 		if(cellXY(x, y).road[up] == true && y < ::height-1 && cellXY(x, y+1).is_open == false) {
-			finder.set_dest(up);
+			finder.set_dest(PathFinder::UP);
 			y++;
 			cellXY(x, y).is_open = true;
 			finder.Stack_Push(up);
@@ -388,10 +388,10 @@ void path_finding()
 	finder.Stack_Pop();
 	finder.Stack_Pop();
 	temp_dest = finder.Stack_Pop();
-	if(temp_dest == down) y++, finder.set_dest(up);
-	else if(temp_dest == left) x++, finder.set_dest(right);
-	else if(temp_dest == right) x--, finder.set_dest(left);
-	else if(temp_dest == up) y--, finder.set_dest(down);
+	if(temp_dest == down) y++, finder.set_dest(PathFinder::UP);
+	else if(temp_dest == left) x++, finder.set_dest(PathFinder::RIGHT);
+	else if(temp_dest == right) x--, finder.set_dest(PathFinder::LEFT);
+	else if(temp_dest == up) y--, finder.set_dest(PathFinder::DOWN);
 }
 
 void goal_ceremony()

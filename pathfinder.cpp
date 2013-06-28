@@ -10,9 +10,8 @@
 #include <cstdlib>
 
 #include "pathfinder.h"
-#include "miro.h"
 
-void PathFinder::set_dest( int new_dest ){
+void PathFinder::set_dest( Direction new_dest ){
 	this->init_dest = Dest;
 	this->Dest = new_dest;
 	rolling_status = 0;
@@ -35,7 +34,7 @@ PathFinder::PathFinder(int x_position, int y_position, int maze_width, int maze_
 	degree_7 = sin(7 * atan(-1) / 180);	// sin( 7 * PI / 180)
 
 	lists();
-	init_dest = Dest = right;
+	init_dest = Dest = RIGHT;
 }
 
 void PathFinder::lists(){
@@ -101,28 +100,28 @@ void PathFinder::Move()
 
 	if( rolling_status == ROLL_FACT ){
 		switch(Dest) {
-		case up:
+		case UP:
 			current_y += movingfactor;//( walk_status >= 0 )? walk_status/3.0 : -walk_status/3.0;
 			break;
-		case down:
+		case DOWN:
 			current_y -= movingfactor;//( walk_status >= 0 )? walk_status/3.0 : -walk_status/3.0;
 			break;
-		case left:
+		case LEFT:
 			current_x -= movingfactor;//( walk_status >= 0 )? walk_status/3.0 : -walk_status/3.0;
 			break;
-		case right:
+		case RIGHT:
 			current_x += movingfactor;//( walk_status >= 0 )? walk_status/3.0 : -walk_status/3.0;
 			break;
 		}
 	}
 
 	if(abs(old_x - current_x) >= 10.0) {
-		current_x = old_x + ((Dest == right) ? 10 : -10);
+		current_x = old_x + ((Dest == RIGHT) ? 10 : -10);
 		old_x = current_x;
 		ismoving = false;
 	}
 	else if(abs(old_y - current_y) >= 10.0) {
-		current_y = old_y + ((Dest == up) ? 10 : -10);
+		current_y = old_y + ((Dest == UP) ? 10 : -10);
 		old_y = current_y;
 		ismoving = false;
 	}
@@ -144,48 +143,48 @@ void PathFinder::Draw()
 	// draw body
 	double rotateAngle = 0;
 	switch (init_dest) {
-	case left:
+	case LEFT:
 		rotateAngle = 180.0;
 		break;
-	case up:
+	case UP:
 		rotateAngle = 90.0;
 		break;
-	case down:
+	case DOWN:
 		rotateAngle = -90.0;
 		break;
 	}
 	if( rolling_status < ROLL_FACT ){
 		switch (init_dest) {
-		case left:
-			if( Dest == right )
+		case LEFT:
+			if( Dest == RIGHT )
 				rotateAngle += 180.0/ROLL_FACT*rolling_status;
-			else if( Dest == up )
+			else if( Dest == UP )
 				rotateAngle += -90.0/ROLL_FACT*rolling_status;
-			else if( Dest == down )
+			else if( Dest == DOWN )
 				rotateAngle += 90.0/ROLL_FACT*rolling_status;
 			break;
-		case right:
-			if( Dest == left )
+		case RIGHT:
+			if( Dest == LEFT )
 				rotateAngle += 180.0/ROLL_FACT*rolling_status;
-			else if( Dest == up )
+			else if( Dest == UP )
 				rotateAngle += 90.0/ROLL_FACT*rolling_status;
-			else if( Dest == down )
+			else if( Dest == DOWN )
 				rotateAngle += -90.0/ROLL_FACT*rolling_status;
 			break;
-		case up:
-			if( Dest == down )
+		case UP:
+			if( Dest == DOWN )
 				rotateAngle += 180.0/ROLL_FACT*rolling_status;
-			else if( Dest == left )
+			else if( Dest == LEFT )
 				rotateAngle += 90.0/ROLL_FACT*rolling_status;
-			else if( Dest == right )
+			else if( Dest == RIGHT )
 				rotateAngle += -90.0/ROLL_FACT*rolling_status;
 			break;
-		case down:
-			if( Dest == left )
+		case DOWN:
+			if( Dest == LEFT )
 				rotateAngle += -90.0/ROLL_FACT*rolling_status;
-			else if( Dest == up )
+			else if( Dest == UP )
 				rotateAngle += 180.0/ROLL_FACT*rolling_status;
-			else if( Dest == right )
+			else if( Dest == RIGHT )
 				rotateAngle += 90.0/ROLL_FACT*rolling_status;
 			break;
 		}

@@ -10,11 +10,12 @@
 
 class PathFinder {
 public:
+	enum Direction { UP = 0, DOWN = 1, RIGHT = 2, LEFT = 3 };
 	PathFinder(int x_position, int y_position, int maze_width, int maze_height);
 	~PathFinder() { delete recursion_stack; }
 
 	bool isMoving() { return ismoving; }	// is it doing moving animation?
-	void set_dest( int new_dest );
+	void set_dest( Direction new_dest );
 	void Move();
 	void SetBodyColor(double r, double g, double b)	{ bodyColorR = r; bodyColorG = g, bodyColorB = b; }
 	void Draw();
