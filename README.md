@@ -23,3 +23,6 @@ Activate the window if it is on background. Press space bar to generate the maze
 *	Initialize all (zoom, scroll, speed): Del
 
 ![image](http://i1138.photobucket.com/albums/n532/pidiom/reachthegoal.png)
+
+## Auto Mode ##
+Run the program with --auto option. The character will move and reach the goal automatically.
